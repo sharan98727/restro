@@ -1,7 +1,7 @@
 import {Table, Tag} from 'antd';
 import React from 'react';
 import 'antd/dist/antd.css';
-import '/home/sharan/Desktop/restaurantitems/src/components/RecipeData.css';
+import './RecipeData.css';
 
 const columns = [
   {
