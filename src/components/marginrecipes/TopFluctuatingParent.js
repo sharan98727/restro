@@ -4,9 +4,9 @@ import TopFluctuating from './TopFluctuating';
 class TopFluctuatingParent extends React.Component {
   state = {
     items: [
-      ['Ambur Biriyani', 5, 'ArrowUpOutlined', 'green'],
-      ['Paneer Tikka', 3, 'ArrowDownOutlined', 'red'],
-      ['Paneer Butter', 8, 'ArrowDownOutlined', 'red'],
+      ['Ambur Biriyani', 5, 'up', 'green'],
+      ['Paneer Tikka', 3, 'Down', 'red'],
+      ['Paneer Butter', 8, 'Down', 'red'],
     ],
   };
 
@@ -25,13 +25,13 @@ class TopFluctuatingParent extends React.Component {
           <TopFluctuating
             value={item[1]}
             arrowdirection={item[2]}
-            color={item[4]}
+            color={item[3]}
           />
         </div>
       );
     });
     return (
-      <div style={{textAlign: 'center', marginTop: '20px'}}>
+      <div style={{textAlign: 'center', marginTop: '23px'}}>
         <div style={{backgroundColor: '#f1f1f1', padding: '10px 0px'}}>
           Top Fluctuating Recipes
         </div>
@@ -41,6 +41,7 @@ class TopFluctuatingParent extends React.Component {
             border: '1px solid #f1f1f1 ',
             marginBottom: '5px',
             paddingBottom: '10px',
+            height: '105px',
           }}
         >
           {fluctitems}

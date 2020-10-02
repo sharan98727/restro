@@ -1,7 +1,6 @@
 import {Table, Tag} from 'antd';
 import React from 'react';
 import 'antd/dist/antd.css';
-// import './RecipeData.css';
 import '/home/sharan/Desktop/restaurantitems/src/components/RecipeData.css';
 
 const columns = [
@@ -54,7 +53,7 @@ class RecipeData extends React.Component {
     selectedRowKeys: [], // Check here to configure the default column
     loading: false,
     data: [],
-    selecteditem: 'is_incorrect',
+    selecteditem: 'all_recipes',
   };
 
   componentDidMount() {
@@ -71,9 +70,9 @@ class RecipeData extends React.Component {
             name: res.results[i].name,
             last_updated: res.results[i].last_updated.date,
             cogs: res.results[i].cogs,
-            cost_price: res.results[i].cost_price,
-            sale_price: res.results[i].sale_price,
-            gross_margin: res.results[i].gross_margin,
+            cost_price: Math.ceil(res.results[i].cost_price),
+            sale_price: Math.ceil(res.results[i].sale_price),
+            gross_margin: Math.ceil(res.results[i].gross_margin),
           });
         }
         this.setState({
@@ -98,8 +97,8 @@ class RecipeData extends React.Component {
               name: res.results[i].name,
               last_updated: res.results[i].last_updated.date,
               cogs: res.results[i].cogs,
-              cost_price: res.results[i].cost_price,
-              sale_price: res.results[i].sale_price,
+              cost_price: Math.ceil(res.results[i].cost_price),
+              sale_price: Math.ceil(res.results[i].sale_price),
               gross_margin: res.results[i].gross_margin,
             });
           }
@@ -126,7 +125,13 @@ class RecipeData extends React.Component {
   };
 
   handleclick = (e) => {
-    console.log(e.target.innerHTML);
+    console.log(e.target.id);
+    if (e.target.innerHTML === 'ALL RECIPES') {
+      this.setState((prevstate) => ({
+        selecteditem: 'all_recipes',
+      }));
+    }
+
     if (e.target.innerHTML === 'INCORRECT') {
       this.setState((prevstate) => ({
         selecteditem: 'is_incorrect',
@@ -146,7 +151,7 @@ class RecipeData extends React.Component {
 
   render() {
     console.log(this.state.selecteditem);
-    const {loading, selectedRowKeys} = this.state;
+    const {loading, selectedRowKeys, selecteditem} = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -154,31 +159,67 @@ class RecipeData extends React.Component {
     // const hasSelected = selectedRowKeys.length > 0;
     return (
       <div>
-        <div className='tab' style={{margin: '30px 832px 0px 20px'}}>
-          <button className='tablinks' onClick={this.handleclick}>
+        <div
+          className='tab'
+          style={{margin: '30px 830px 0px 20px', borderRadius: '10px'}}
+        >
+          <button
+            className={
+              selecteditem === 'all_recipes' ? 'tablinks active' : 'tablinks'
+            }
+            id='all'
+            onClick={this.handleclick}
+            style={{borderTopRightRadius: '10px'}}
+          >
             ALL RECIPES
           </button>
-          <button className='tablinks' onClick={this.handleclick}>
+          <button
+            className={
+              selecteditem === 'is_incorrect' ? 'tablinks active' : 'tablinks'
+            }
+            id='inc'
+            onClick={this.handleclick}
+            style={{borderTopRightRadius: '10px'}}
+          >
             INCORRECT
           </button>
-          <button className='tablinks' onClick={this.handleclick}>
+          <button
+            className={
+              selecteditem === 'is_untagged' ? 'tablinks active' : 'tablinks'
+            }
+            id='unt'
+            onClick={this.handleclick}
+            style={{borderTopRightRadius: '10px'}}
+          >
             UNTAGGED
           </button>
-          <button className='tablinks' onClick={this.handleclick}>
+          <button
+            className={
+              selecteditem === 'is_disabled' ? 'tablinks active' : 'tablinks'
+            }
+            id='dis'
+            onClick={this.handleclick}
+            style={{borderTopRightRadius: '10px'}}
+          >
             DISABLED
           </button>
         </div>
-        {/* <div style={{ marginBottom: 16 }}>
-          <span style={{ marginLeft: 8 }}>
+        <div
+          style={{
+            marginBottom: 'auto',
+          }}
+        >
+          {/* <span style={{display: 'flex', justifyContent: 'flex-end'}}>
             {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
-          </span>
-        </div> */}
+          </span> */}
+        </div>
         <Table
+          className='rowColor'
           rowSelection={rowSelection}
           columns={columns}
           dataSource={this.state.data}
-          pagination={false}
           style={{margin: '0px 20px 0px 20px'}}
+          pagination={{defaultCurrent: 1, pageSize: 4}}
         />
       </div>
     );
